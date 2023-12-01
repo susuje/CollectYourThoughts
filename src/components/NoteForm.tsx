@@ -1,16 +1,20 @@
 import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect, useRef } from 'react'
-
+import { useState, useEffect, useRef, FormEvent } from 'react'
+import { NewNoteProps } from '../pages/NewNote'
 import xIcon from '../assets/x-icon.svg'
 
-export default function NoteForm() {
+export default function NoteForm({ createNote }: NewNoteProps) {
   const navigate = useNavigate()
   const [show, setShow] = useState(true)
   const [tag, setTag] = useState('')
   const [tagList, setTagList] = useState<string[]>([])
   const [tagListWidth, setTagListWidth] = useState(0)
+
   const tagListRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLInputElement>(null)
+  const contentRef = useRef<HTMLTextAreaElement>(null)
+
   const createTag = () => {
     setTagList(prev => [...prev, tag])
     setTag('')
@@ -32,17 +36,36 @@ export default function NoteForm() {
     )
   }
   useEffect(() => {
+    //태그생기면 input에 태그width만큼 패딩이 생긴다
     if (tagListRef.current) {
       console.log(tagListRef.current)
       setTagListWidth(tagListRef.current.getBoundingClientRect().width)
     }
   }, [tagList])
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+
+    const today = new Date()
+    const date = today.getDate()
+    const year = today.getFullYear()
+    const month = today.getMonth()
+    const created = `${year}-${month + 1}-${date}`
+    createNote({
+      id: Date.now(),
+      title: titleRef.current!.value,
+      content: contentRef.current!.value,
+      tags: tagList,
+      createdAt: created,
+    })
+    navigate('/')
+  }
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <FlexDiv>
         <LeftDiv>
           <Label>제목</Label>
-          <Input type="text" />
+          <Input type="text" required ref={titleRef} />
         </LeftDiv>
         <RightDiv>
           <Label>주제</Label>
@@ -81,12 +104,12 @@ export default function NoteForm() {
       </FlexDiv>
 
       <Label>내용</Label>
-      <Textarea />
+      <Textarea required ref={contentRef} />
       <BtnDiv>
         <Btn className="save" type="submit">
           저장
         </Btn>
-        <Btn type="button" onClick={() => navigate(-1)}>
+        <Btn type="button" onClick={() => navigate('/')}>
           취소
         </Btn>
       </BtnDiv>
