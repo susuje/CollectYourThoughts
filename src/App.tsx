@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import NewNote from './pages/NewNote'
 import Home from './pages/Home'
 import Detail from './pages/Detail'
+import Edit from './pages/Edit'
 
 export type NoteData = {
   id: number
@@ -35,13 +36,25 @@ function App() {
     setAllNotes(allNotes.filter((el: NoteData) => el.id !== data.id))
   }
 
+  const editNote = (data: NoteData) => {
+    setAllNotes(prev => {
+      return prev.map(note => {
+        if (note.id === data.id) {
+          return data //수정된걸 반환
+        } else {
+          return note //수정안한건 그대로 반환
+        }
+      })
+    })
+  }
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/new" element={<NewNote createNote={createNote} />} />
       <Route path="/:id">
         <Route index element={<Detail deleteNote={deleteNote} />} />
-        <Route path="edit" element={<h1>Edit</h1>} />
+        <Route path="edit" element={<Edit editNote={editNote} />} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

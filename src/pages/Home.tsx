@@ -62,18 +62,24 @@ export default function Home() {
         <TagBtn onClick={handleTags} className={allclicked ? 'allClicked' : ''}>
           전체 노트
         </TagBtn>
-        <h2>주제별 :</h2>
-        {tags.map((el, ind) => {
-          return (
-            <TagBtn
-              onClick={handleTags}
-              className={clickedIndex === ind ? 'blue' : ''}
-            >
-              {el}
-            </TagBtn>
-          )
-        })}
+
+        <div>
+          <h2>주제별 :</h2>
+          {tags.map((el, ind) => {
+            return (
+              <TagBtn
+                onClick={handleTags}
+                className={clickedIndex === ind ? 'blue' : ''}
+              >
+                {el}
+              </TagBtn>
+            )
+          })}
+        </div>
       </TagDiv>
+      {allNotes.length === 0 ? (
+        <h2 className="none">글을 작성해주세요📝</h2>
+      ) : null}
       <NotesDiv>
         {allclicked
           ? allNotes.map(el => {
@@ -119,11 +125,21 @@ const Container = styled.div`
     font-weight: 700;
     margin: 40px 0;
   }
+  h2.none {
+    margin-top: 150px;
+    font-size: 36px;
+    font-weight: 500;
+    text-align: center;
+  }
 `
 const FlexDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
 `
 const AddBtn = styled.button`
   background-color: black;
@@ -131,8 +147,18 @@ const AddBtn = styled.button`
   font-size: 16px;
   border-radius: 25px;
   padding: 15px 25px;
+
+  @media screen and (max-width: 480px) {
+    margin-bottom: 30px;
+  }
 `
 const TagDiv = styled.div`
+  div {
+    display: inline-block;
+    @media screen and (max-width: 480px) {
+      margin-top: 10px;
+    }
+  }
   h2 {
     display: inline-block;
     margin-left: 10px;
@@ -151,6 +177,9 @@ const TagBtn = styled.button`
   &.allClicked {
     background-color: #4d7bff;
   }
+  &:last-child {
+    margin-right: 0;
+  }
 `
 
 const NotesDiv = styled.div`
@@ -158,8 +187,13 @@ const NotesDiv = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
   margin-top: 30px;
   gap: 6vh 3vw;
+
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr 1fr;
+  }
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: 1fr;
   }
 `
 const NoteWrapper = styled.div`

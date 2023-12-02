@@ -13,7 +13,6 @@ export default function Detail({ deleteNote }: DetailProps) {
 
   useEffect(() => {
     const notes = localStorage.getItem('notes')
-    console.log(params)
     if (notes && params.id) {
       const notesArr = JSON.parse(notes)
       const noteDetail = notesArr.filter(
@@ -45,6 +44,18 @@ export default function Detail({ deleteNote }: DetailProps) {
         >
           삭제
         </button>
+        <button
+          className="edit"
+          onClick={() => {
+            navigate(`/${params.id}/edit`, {
+              state: {
+                detail: detail,
+              },
+            })
+          }}
+        >
+          수정
+        </button>
       </BtnDiv>
     </Container>
   )
@@ -75,6 +86,13 @@ const BtnDiv = styled.div`
     padding: 15px 30px;
     background-color: black;
     color: white;
+
+    &.edit {
+      margin-left: 10px;
+      color: black;
+      background-color: white;
+      border: 1px solid #c4c4c4;
+    }
   }
 `
 const FlexDiv = styled.div`

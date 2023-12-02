@@ -4,7 +4,11 @@ import { useState, useEffect, useRef, FormEvent } from 'react'
 import { NewNoteProps } from '../pages/NewNote'
 import xIcon from '../assets/x-icon.svg'
 
-export default function NoteForm({ createNote }: NewNoteProps) {
+export default function NoteForm({
+  createNote,
+  editNote,
+  detail,
+}: NewNoteProps) {
   const navigate = useNavigate()
   const [show, setShow] = useState(true)
   const [tag, setTag] = useState('')
@@ -43,6 +47,16 @@ export default function NoteForm({ createNote }: NewNoteProps) {
     }
   }, [tagList])
 
+  useEffect(() => {
+    //태그생기면 input에 태그width만큼 패딩이 생긴다
+    if (detail) {
+      console.log(detail)
+      titleRef.current!.value = detail[0].title
+      contentRef.current!.value = detail[0].content
+      setTagList(detail[0].tags)
+    }
+  }, [])
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
@@ -51,13 +65,23 @@ export default function NoteForm({ createNote }: NewNoteProps) {
     const year = today.getFullYear()
     const month = today.getMonth()
     const created = `${year}-${month + 1}-${date}`
-    createNote({
-      id: Date.now(),
-      title: titleRef.current!.value,
-      content: contentRef.current!.value,
-      tags: tagList,
-      createdAt: created,
-    })
+    if (createNote) {
+      createNote({
+        id: Date.now(),
+        title: titleRef.current!.value,
+        content: contentRef.current!.value,
+        tags: tagList,
+        createdAt: created,
+      })
+    } else if (editNote && detail) {
+      editNote({
+        id: detail[0].id,
+        title: titleRef.current!.value,
+        content: contentRef.current!.value,
+        tags: tagList,
+        createdAt: detail[0].createdAt,
+      })
+    }
     navigate('/')
   }
   return (

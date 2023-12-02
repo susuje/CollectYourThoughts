@@ -1,20 +1,20 @@
 import NoteForm from '../components/NoteForm'
 import { styled } from 'styled-components'
-import { NoteData } from '../App'
-export type NewNoteProps = {
-  createNote?: (data: NoteData) => void
-  editNote?: (data: NoteData) => void
-  detail?: NoteData[]
-}
-export default function NewNote({ createNote }: NewNoteProps) {
+
+import { useLocation } from 'react-router-dom'
+import { NewNoteProps } from './NewNote'
+
+export default function Edit({ editNote }: NewNoteProps) {
+  const location = useLocation()
+  const { detail } = location.state
+
   return (
     <Container>
-      <h1>New Note 📝</h1>
-      <NoteForm createNote={createNote} />
+      <h1>Edit Note 📝</h1>
+      <NoteForm editNote={editNote} detail={detail} />
     </Container>
   )
 }
-
 const Container = styled.div`
   max-width: 900px;
   padding: 0px 20px;
