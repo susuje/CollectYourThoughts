@@ -2,7 +2,8 @@ import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef, FormEvent } from 'react'
 import { NewNoteProps } from '../pages/NewNote'
-import cancelicon from '../assets/cancelicon.svg'
+
+import xicon from '../assets/icon-delete.png'
 
 export default function NoteForm({
   createNote,
@@ -215,7 +216,7 @@ const Tag = styled.div`
     height: 15px;
     color: white;
     margin-left: 10px;
-    background: url(${cancelicon}) no-repeat right/15px 15px;
+    background: url(${xicon}) no-repeat right/15px 15px;
   }
 `
 
