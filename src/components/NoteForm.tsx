@@ -108,7 +108,13 @@ export default function NoteForm({
                 return (
                   <Tag key={i}>
                     {txt}
-                    <button type="button" onClick={deleteTag}></button>
+                    <button
+                      type="button"
+                      onClick={deleteTag}
+                      style={{
+                        background: `url(${xIcon}) no-repeat right/15px 15px`,
+                      }}
+                    ></button>
                   </Tag>
                 )
               })}
@@ -213,7 +219,7 @@ const Tag = styled.div`
   button {
     width: 15px;
     height: 15px;
-    background: url(${xIcon}) no-repeat right/15px 15px;
+
     margin-left: 10px;
   }
 `
