@@ -2,7 +2,7 @@ import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef, FormEvent } from 'react'
 import { NewNoteProps } from '../pages/NewNote'
-import xicon from '../assets/x-icon.svg'
+import cancelicon from '../assets/cancelicon.svg'
 
 export default function NoteForm({
   createNote,
@@ -108,13 +108,7 @@ export default function NoteForm({
                 return (
                   <Tag key={i}>
                     {txt}
-                    <button
-                      type="button"
-                      onClick={deleteTag}
-                      style={{
-                        background: `url(${xicon}) no-repeat right/15px 15px`,
-                      }}
-                    ></button>
+                    <button type="button" onClick={deleteTag}></button>
                   </Tag>
                 )
               })}
@@ -219,8 +213,9 @@ const Tag = styled.div`
   button {
     width: 15px;
     height: 15px;
-
+    color: white;
     margin-left: 10px;
+    background: url(${cancelicon}) no-repeat right/15px 15px;
   }
 `
 
