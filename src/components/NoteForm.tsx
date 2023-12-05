@@ -2,7 +2,7 @@ import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef, FormEvent } from 'react'
 import { NewNoteProps } from '../pages/NewNote'
-import xIcon from '../assets/x-icon.svg'
+import xicon from '../assets/x-icon.svg'
 
 export default function NoteForm({
   createNote,
@@ -112,7 +112,7 @@ export default function NoteForm({
                       type="button"
                       onClick={deleteTag}
                       style={{
-                        background: `url(${xIcon}) no-repeat right/15px 15px`,
+                        background: `url(${xicon}) no-repeat right/15px 15px`,
                       }}
                     ></button>
                   </Tag>
