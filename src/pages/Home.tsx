@@ -2,7 +2,11 @@ import { styled } from 'styled-components'
 import { useState, useEffect } from 'react'
 import { NoteData } from '../App'
 import { useNavigate } from 'react-router-dom'
+
+import { useLocation } from 'react-router-dom'
+
 export default function Home() {
+  const location = useLocation()
   const navigate = useNavigate()
   const [allclicked, setAllClicked] = useState(true)
   const [clickedIndex, setClickedIndex] = useState<number | null>()
@@ -35,7 +39,7 @@ export default function Home() {
     if (notes) {
       setAllnotes(JSON.parse(notes).reverse())
     }
-  }, [])
+  }, [location])
 
   useEffect(() => {
     if (allNotes.length > 0) {
