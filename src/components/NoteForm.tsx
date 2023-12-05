@@ -48,7 +48,7 @@ export default function NoteForm({
   }, [tagList])
 
   useEffect(() => {
-    //태그생기면 input에 태그width만큼 패딩이 생긴다
+    //만약 수정시
     if (detail) {
       console.log(detail)
       titleRef.current!.value = detail[0].title
