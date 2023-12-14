@@ -5,9 +5,9 @@
 Typescript에 익숙하지않아 토이 프로젝트를 진행하였습니다.
 
 ## 기술 스택
-React, Typescript, localStorage, Styled-component
+React, Typescript, Redux-toolkit, localStorage, Styled-component
 
-추후 Redux를 이용해, 리팩토링 할 예정
+2023.12.14 Redux-toolkit을 이용해, 리팩토링 완료
 
 ## 기능 시연
 반응형웹으로, 두가지 버전이 있습니다.
