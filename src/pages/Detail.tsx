@@ -2,11 +2,10 @@ import { styled } from 'styled-components'
 import { useState, useEffect } from 'react'
 import { NoteData } from '../App'
 import { useNavigate, useParams } from 'react-router-dom'
-type DetailProps = {
-  deleteNote: (data: NoteData) => void
-}
-
-export default function Detail({ deleteNote }: DetailProps) {
+import { deleteNote } from '../slices/noteSlice'
+import { useDispatch } from 'react-redux'
+export default function Detail() {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const params = useParams() //{id: '1701411652974'}
   const [detail, setDetail] = useState<NoteData[]>([])
@@ -37,7 +36,7 @@ export default function Detail({ deleteNote }: DetailProps) {
       <BtnDiv>
         <button
           onClick={() => {
-            deleteNote(detail[0])
+            dispatch(deleteNote(params.id))
             window.alert('삭제되었습니다')
             navigate('/')
           }}

@@ -2,16 +2,20 @@ import { styled } from 'styled-components'
 import { useState, useEffect } from 'react'
 import { NoteData } from '../App'
 import { useNavigate } from 'react-router-dom'
-
-import { useLocation } from 'react-router-dom'
-
+import { useSelector } from 'react-redux'
+type RootState = {
+  note: {
+    noteList: NoteData[]
+  }
+}
 export default function Home() {
-  const location = useLocation()
   const navigate = useNavigate()
   const [allclicked, setAllClicked] = useState(true)
   const [clickedIndex, setClickedIndex] = useState<number | null>()
-  const [allNotes, setAllnotes] = useState<NoteData[]>([])
   const [showNotes, setShowNotes] = useState<NoteData[]>([])
+
+  const NoteList = useSelector((state: RootState) => state.note.noteList)
+  const sortedList = [...NoteList].reverse()
   const [tags, setTags] = useState<string[]>([])
 
   const handleTags = (e: React.MouseEvent<HTMLElement>) => {
@@ -25,7 +29,7 @@ export default function Home() {
       setClickedIndex(index)
       setAllClicked(false)
       setShowNotes([])
-      allNotes.map(el => {
+      sortedList.map(el => {
         if (el.tags.includes(show)) {
           // console.log(el)
           setShowNotes(prev => [...prev, el]) // {}  [{},{}]
@@ -35,27 +39,16 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const notes = localStorage.getItem('notes')
-    if (notes) {
-      setAllnotes(JSON.parse(notes).reverse())
-    }
-  }, [location])
-
-  useEffect(() => {
-    if (allNotes.length > 0) {
-      console.log('d')
-      const tagsArr = allNotes
-        .map(el =>
-          el.tags.map(tags => {
-            return tags
-          })
-        )
-        .flat()
+    if (NoteList.length > 0) {
+      const tagsArr = NoteList.map(el =>
+        el.tags.map(tags => {
+          return tags
+        })
+      ).flat()
       const filterdTags = [...new Set(tagsArr)]
       setTags(filterdTags)
     }
-  }, [allNotes])
-
+  }, [NoteList])
   return (
     <Container>
       <FlexDiv>
@@ -81,12 +74,12 @@ export default function Home() {
           })}
         </div>
       </TagDiv>
-      {allNotes.length === 0 ? (
+      {NoteList.length === 0 ? (
         <h2 className="none">글을 작성해주세요📝</h2>
       ) : null}
       <NotesDiv>
         {allclicked
-          ? allNotes.map(el => {
+          ? sortedList.map(el => {
               return (
                 <NoteWrapper onClick={() => navigate(`/${el.id}`)}>
                   <div>
@@ -184,6 +177,10 @@ const TagBtn = styled.button`
   &:last-child {
     margin-right: 0;
   }
+
+  @media screen and (max-width: 768px) {
+    margin-bottom: 10px;
+  }
 `
 
 const NotesDiv = styled.div`
@@ -198,6 +195,7 @@ const NotesDiv = styled.div`
 
   @media screen and (max-width: 480px) {
     grid-template-columns: 1fr;
+    padding-bottom: 20px;
   }
 `
 const NoteWrapper = styled.div`

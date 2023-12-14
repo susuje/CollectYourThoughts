@@ -1,16 +1,11 @@
 import NoteForm from '../components/NoteForm'
 import { styled } from 'styled-components'
-import { NoteData } from '../App'
-export type NewNoteProps = {
-  createNote?: (data: NoteData) => void
-  editNote?: (data: NoteData) => void
-  detail?: NoteData[]
-}
-export default function NewNote({ createNote }: NewNoteProps) {
+
+export default function NewNote() {
   return (
     <Container>
       <h1>New Note 📝</h1>
-      <NoteForm createNote={createNote} />
+      <NoteForm type="add" />
     </Container>
   )
 }

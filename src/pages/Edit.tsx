@@ -2,16 +2,15 @@ import NoteForm from '../components/NoteForm'
 import { styled } from 'styled-components'
 
 import { useLocation } from 'react-router-dom'
-import { NewNoteProps } from './NewNote'
 
-export default function Edit({ editNote }: NewNoteProps) {
+export default function Edit() {
   const location = useLocation()
   const { detail } = location.state
 
   return (
     <Container>
       <h1>Edit Note 📝</h1>
-      <NoteForm editNote={editNote} detail={detail} />
+      <NoteForm type="edit" detail={detail} />
     </Container>
   )
 }

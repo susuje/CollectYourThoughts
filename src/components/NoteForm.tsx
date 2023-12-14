@@ -1,21 +1,21 @@
 import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef, FormEvent } from 'react'
-import { NewNoteProps } from '../pages/NewNote'
-
+import { useDispatch } from 'react-redux'
+import { addNote, updateNote } from '../slices/noteSlice'
 import xicon from '../assets/icon-delete.png'
-
-export default function NoteForm({
-  createNote,
-  editNote,
-  detail,
-}: NewNoteProps) {
+import { NoteData } from '../App'
+type Props = {
+  type: string
+  detail?: NoteData[]
+}
+export default function NoteForm({ type, detail }: Props) {
   const navigate = useNavigate()
   const [show, setShow] = useState(true)
   const [tag, setTag] = useState('')
   const [tagList, setTagList] = useState<string[]>([])
   const [tagListWidth, setTagListWidth] = useState(0)
-
+  const dispatch = useDispatch()
   const tagListRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLInputElement>(null)
   const contentRef = useRef<HTMLTextAreaElement>(null)
@@ -51,7 +51,6 @@ export default function NoteForm({
   useEffect(() => {
     //만약 수정시
     if (detail) {
-      console.log(detail)
       titleRef.current!.value = detail[0].title
       contentRef.current!.value = detail[0].content
       setTagList(detail[0].tags)
@@ -66,23 +65,28 @@ export default function NoteForm({
     const year = today.getFullYear()
     const month = today.getMonth()
     const created = `${year}-${month + 1}-${date}`
-    if (createNote) {
-      createNote({
-        id: Date.now(),
-        title: titleRef.current!.value,
-        content: contentRef.current!.value,
-        tags: tagList,
-        createdAt: created,
-      })
-    } else if (editNote && detail) {
-      editNote({
-        id: detail[0].id,
-        title: titleRef.current!.value,
-        content: contentRef.current!.value,
-        tags: tagList,
-        createdAt: detail[0].createdAt,
-      })
+    if (type === 'add') {
+      dispatch(
+        addNote({
+          id: Date.now(),
+          title: titleRef.current!.value,
+          content: contentRef.current!.value,
+          tags: tagList,
+          createdAt: created,
+        })
+      )
+    } else if (type === 'edit' && detail) {
+      dispatch(
+        updateNote({
+          id: detail[0].id,
+          title: titleRef.current!.value,
+          content: contentRef.current!.value,
+          tags: tagList,
+          createdAt: detail[0].createdAt,
+        })
+      )
     }
+
     navigate('/')
   }
   return (
@@ -231,6 +235,7 @@ const Textarea = styled.textarea`
 const BtnDiv = styled.div`
   margin-top: 10px;
   text-align: right;
+  padding-bottom: 20px;
 `
 const Btn = styled.button`
   font-size: 18px;
